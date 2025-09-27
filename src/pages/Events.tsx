@@ -68,7 +68,8 @@ export default function Events() {
   };
 
   const handleManageEvent = (eventId: string) => {
-    // Navigate to dashboard or tasks for the specific event
+    // Start managing the event and navigate to dashboard
+    dispatch({ type: 'START_MANAGING_EVENT', payload: eventId });
     navigate('/dashboard');
   };
 

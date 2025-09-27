@@ -80,6 +80,8 @@ export interface AppState {
   
   // UI
   currentView: string;
+  isManagingEvent: boolean;
+  currentEventId: string | null;
 }
 
 // Actions
@@ -92,6 +94,8 @@ type AppAction =
   | { type: 'MOVE_TASK'; payload: { taskId: string; newStage: Task['stage'] } }
   | { type: 'ADD_AI_LOG'; payload: Omit<AILog, 'id'> }
   | { type: 'SET_VIEW'; payload: string }
+  | { type: 'START_MANAGING_EVENT'; payload: string }
+  | { type: 'STOP_MANAGING_EVENT' }
   | { type: 'ADD_VENDOR'; payload: Omit<Vendor, 'id'> }
   | { type: 'UPDATE_VENDOR'; payload: Vendor }
   | { type: 'DELETE_VENDOR'; payload: string }
@@ -224,7 +228,9 @@ const initialState: AppState = {
   ],
   
   aiLogs: [],
-  currentView: 'dashboard'
+  currentView: 'dashboard',
+  isManagingEvent: false,
+  currentEventId: null
 };
 
 // Reducer
@@ -385,6 +391,22 @@ function appReducer(state: AppState, action: AppAction): AppState {
       newState = {
         ...state,
         currentView: action.payload
+      };
+      break;
+      
+    case 'START_MANAGING_EVENT':
+      newState = {
+        ...state,
+        isManagingEvent: true,
+        currentEventId: action.payload
+      };
+      break;
+      
+    case 'STOP_MANAGING_EVENT':
+      newState = {
+        ...state,
+        isManagingEvent: false,
+        currentEventId: null
       };
       break;
       

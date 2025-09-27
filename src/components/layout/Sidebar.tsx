@@ -34,11 +34,23 @@ export function Sidebar() {
 
   const handleNavClick = (viewId: string) => {
     dispatch({ type: 'SET_VIEW', payload: viewId });
+    
+    // If clicking on "My Events", stop managing event
+    if (viewId === 'events') {
+      dispatch({ type: 'STOP_MANAGING_EVENT' });
+    }
   };
 
-  // Filter sidebar items based on user role
+  // Filter sidebar items based on user role and event management state
   const visibleItems = sidebarItems.filter(item => {
     if (!state.user) return false;
+    
+    // Always show My Events
+    if (item.id === 'events') return item.roles.includes(state.user.role);
+    
+    // Only show other items when managing an event
+    if (!state.isManagingEvent) return false;
+    
     return item.roles.includes(state.user.role);
   });
 

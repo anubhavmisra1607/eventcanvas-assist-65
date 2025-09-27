@@ -1,10 +1,31 @@
-import React from 'react';
-import { Award, Upload, Download, Eye, MessageSquare } from 'lucide-react';
+import React, { useState } from 'react';
+import { Award, Upload, Download, Eye, MessageSquare, FileSpreadsheet, Users, Mic, UserCheck } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 
 export default function Certificates() {
+  const [templateUploaded, setTemplateUploaded] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState({
+    volunteers: null as File | null,
+    participants: null as File | null,
+    speakers: null as File | null
+  });
+
+  const handleTemplateUpload = () => {
+    setTemplateUploaded(true);
+  };
+
+  const handleExcelUpload = (type: 'volunteers' | 'participants' | 'speakers', file: File) => {
+    setUploadedFiles(prev => ({ ...prev, [type]: file }));
+  };
+
+  const generateCertificates = (type: 'volunteers' | 'participants' | 'speakers') => {
+    console.log(`Generating certificates for ${type}`);
+    // Implementation would process the Excel file and generate certificates
+  };
+
   return (
     <div className="p-6 space-y-6 animate-fade-in">
       {/* Header */}
@@ -44,7 +65,7 @@ export default function Certificates() {
                 <p className="text-muted-foreground mb-4">
                   Upload a certificate template with placeholders for names, dates, and event details
                 </p>
-                <Button variant="gradient">
+                <Button variant="gradient" onClick={handleTemplateUpload}>
                   <Upload className="w-4 h-4 mr-2" />
                   Choose File
                 </Button>
@@ -76,6 +97,151 @@ export default function Certificates() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Excel Upload Section - Only show after template is uploaded */}
+          {templateUploaded && (
+            <Card className="shadow-soft">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileSpreadsheet className="w-5 h-5 text-primary" />
+                  Upload Excel Files for Certificate Generation
+                </CardTitle>
+                <CardDescription>
+                  Upload Excel files containing lists of volunteers, participants, and speakers
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Volunteers Upload */}
+                <div className="border rounded-lg p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <UserCheck className="w-5 h-5 text-success" />
+                    <h4 className="font-medium">Volunteers</h4>
+                    {uploadedFiles.volunteers && (
+                      <Badge variant="secondary" className="bg-success/20 text-success">
+                        {uploadedFiles.volunteers.name}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Upload Excel file with volunteer names and details
+                  </p>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        const input = document.createElement('input');
+                        input.type = 'file';
+                        input.accept = '.xlsx,.xls';
+                        input.onchange = (e) => {
+                          const file = (e.target as HTMLInputElement).files?.[0];
+                          if (file) handleExcelUpload('volunteers', file);
+                        };
+                        input.click();
+                      }}
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Excel
+                    </Button>
+                    {uploadedFiles.volunteers && (
+                      <Button 
+                        variant="gradient" 
+                        onClick={() => generateCertificates('volunteers')}
+                      >
+                        <Award className="w-4 h-4 mr-2" />
+                        Generate Certificates
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Participants Upload */}
+                <div className="border rounded-lg p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Users className="w-5 h-5 text-primary" />
+                    <h4 className="font-medium">Participants</h4>
+                    {uploadedFiles.participants && (
+                      <Badge variant="secondary" className="bg-primary/20 text-primary">
+                        {uploadedFiles.participants.name}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Upload Excel file with participant names and details
+                  </p>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        const input = document.createElement('input');
+                        input.type = 'file';
+                        input.accept = '.xlsx,.xls';
+                        input.onchange = (e) => {
+                          const file = (e.target as HTMLInputElement).files?.[0];
+                          if (file) handleExcelUpload('participants', file);
+                        };
+                        input.click();
+                      }}
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Excel
+                    </Button>
+                    {uploadedFiles.participants && (
+                      <Button 
+                        variant="gradient" 
+                        onClick={() => generateCertificates('participants')}
+                      >
+                        <Award className="w-4 h-4 mr-2" />
+                        Generate Certificates
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Speakers Upload */}
+                <div className="border rounded-lg p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Mic className="w-5 h-5 text-warning" />
+                    <h4 className="font-medium">Speakers</h4>
+                    {uploadedFiles.speakers && (
+                      <Badge variant="secondary" className="bg-warning/20 text-warning">
+                        {uploadedFiles.speakers.name}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Upload Excel file with speaker names and details
+                  </p>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        const input = document.createElement('input');
+                        input.type = 'file';
+                        input.accept = '.xlsx,.xls';
+                        input.onchange = (e) => {
+                          const file = (e.target as HTMLInputElement).files?.[0];
+                          if (file) handleExcelUpload('speakers', file);
+                        };
+                        input.click();
+                      }}
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload Excel
+                    </Button>
+                    {uploadedFiles.speakers && (
+                      <Button 
+                        variant="gradient" 
+                        onClick={() => generateCertificates('speakers')}
+                      >
+                        <Award className="w-4 h-4 mr-2" />
+                        Generate Certificates
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Generation Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
