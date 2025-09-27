@@ -9,11 +9,6 @@ export function DashboardRedirect() {
     return <Navigate to="/login" replace />;
   }
   
-  // Event managers are redirected to events page first
-  if (state.user.role === 'event_manager') {
-    return <Navigate to="/events" replace />;
-  }
-  
-  // Volunteers and speakers are redirected to tasks page
-  return <Navigate to="/tasks" replace />;
+  // All users are redirected to events page first
+  return <Navigate to="/events" replace />;
 }
