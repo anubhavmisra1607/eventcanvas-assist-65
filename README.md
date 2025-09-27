@@ -1,6 +1,6 @@
 View frontend code:
 
-https://eventcanvas-assist-65.lovable.app/
+https://event-ops-xasg.vercel.app/
 
 
 # EventOps
