@@ -1,73 +1,113 @@
-# Welcome to your Lovable project
+View frontend code:
 
-## Project info
 
-**URL**: https://lovable.dev/projects/e68034f7-c192-47a3-b0f2-d15f41da95ec
 
-## How can I edit this code?
 
-There are several ways of editing your application.
+# EventOps
 
-**Use Lovable**
+EventOps is a web-based platform for managing and streamlining event
+operations.\
+This repository contains the frontend code built with **Vite**,
+**React/TypeScript**, and **Tailwind CSS**.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e68034f7-c192-47a3-b0f2-d15f41da95ec) and start prompting.
+## 📂 Project Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+    EventOps-main/
+    ├─ frontend-event-ops/      # Frontend Vite + React + Tailwind application
+    │  ├─ public/               # Static assets
+    │  ├─ src/                  # Application source code
+    │  │  ├─ components/        # Reusable UI components
+    │  │  ├─ pages/             # Page-level components/routes
+    │  │  ├─ assets/            # Images, icons, etc.
+    │  │  └─ ...                # Other frontend logic
+    │  ├─ index.html            # App entry HTML
+    │  ├─ package.json          # Frontend dependencies & scripts
+    │  └─ vite.config.ts        # Vite configuration
+    └─ other files              # .gitignore, docs, etc.
 
-**Use your preferred IDE**
+## 🚀 Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+-   ⚡ **Vite** for fast development and build.
+-   💅 **Tailwind CSS** for modern, responsive styling.
+-   🧩 **Component-based architecture** with reusable React components.
+-   ✅ TypeScript for type-safe development.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🛠️ Tech Stack
 
-Follow these steps:
+-   **Framework**: React + Vite
+-   **Language**: TypeScript
+-   **Styling**: Tailwind CSS
+-   **Build Tools**: Vite, PostCSS
+-   **Linting**: ESLint
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 📦 Installation & Setup
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Prerequisites
 
-# Step 3: Install the necessary dependencies.
-npm i
+-   [Node.js](https://nodejs.org/) (v16+ recommended)
+-   npm or bun (if you prefer bun)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Steps
 
-**Edit a file directly in GitHub**
+1.  **Clone the repository**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+    ``` bash
+    git clone https://github.com/your-username/EventOps.git
+    cd EventOps-main/frontend-event-ops
+    ```
 
-**Use GitHub Codespaces**
+2.  **Install dependencies**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+    ``` bash
+    npm install
+    # or
+    bun install
+    ```
 
-## What technologies are used for this project?
+3.  **Run the development server**
 
-This project is built with:
+    ``` bash
+    npm run dev
+    # or
+    bun dev
+    ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+    The app will be available at: `http://localhost:5173`
 
-## How can I deploy this project?
+4.  **Build for production**
 
-Simply open [Lovable](https://lovable.dev/projects/e68034f7-c192-47a3-b0f2-d15f41da95ec) and click on Share -> Publish.
+    ``` bash
+    npm run build
+    ```
 
-## Can I connect a custom domain to my Lovable project?
+5.  **Preview production build**
 
-Yes, you can!
+    ``` bash
+    npm run preview
+    ```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🧩 Scripts
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+  Command             Description
+  ------------------- --------------------------
+  `npm run dev`       Start development server
+  `npm run build`     Build for production
+  `npm run preview`   Preview production build
+  `npm run lint`      Run ESLint checks
+
+## 📁 Environment Variables
+
+If the project requires API keys or environment settings, create a
+`.env` file in `frontend-event-ops/` and add required keys as:
+
+    VITE_API_URL=https://your-api-endpoint
+
+## 🤝 Contributing
+
+Contributions are welcome! Please fork this repository and submit a pull
+request.
+
+## 📄 License
+
+This project is licensed under the MIT License -- see the
+[LICENSE](LICENSE) file for details.
