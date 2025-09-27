@@ -46,7 +46,7 @@ const App = () => (
             } />
             
             <Route path="/events" element={
-              <ProtectedRoute allowedRoles={['event_manager']}>
+              <ProtectedRoute>
                 <Layout>
                   <Events />
                 </Layout>
