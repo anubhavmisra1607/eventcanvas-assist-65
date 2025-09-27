@@ -23,36 +23,47 @@ export default function Events() {
   const navigate = useNavigate();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   
-  // Mock events data - this would normally come from the app context
-  const [events] = useState<Event[]>([
-    {
-      id: '1',
-      title: 'Annual Tech Summit 2024',
-      description: 'A comprehensive conference featuring the latest in technology trends and innovations.',
-      date: '2024-03-15',
-      location: 'San Francisco Convention Center',
-      status: 'planning',
-      attendees: 500
-    },
-    {
-      id: '2',
-      title: 'AI & Machine Learning Workshop',
-      description: 'Hands-on workshop covering practical applications of AI and ML in business.',
-      date: '2024-02-28',
-      location: 'Tech Hub Downtown',
-      status: 'active',
-      attendees: 150
-    },
-    {
-      id: '3',
-      title: 'Startup Pitch Competition',
-      description: 'Local entrepreneurs present their innovative ideas to potential investors.',
-      date: '2024-01-20',
-      location: 'Innovation Center',
-      status: 'completed',
-      attendees: 200
+  // Mock events data - filtered based on user role
+  const getEventsForRole = () => {
+    const allEvents = [
+      {
+        id: '1',
+        title: 'Annual Tech Summit 2024',
+        description: 'A comprehensive conference featuring the latest in technology trends and innovations.',
+        date: '2024-03-15',
+        location: 'San Francisco Convention Center',
+        status: 'planning' as const,
+        attendees: 500
+      },
+      {
+        id: '2',
+        title: 'AI & Machine Learning Workshop',
+        description: 'Hands-on workshop covering practical applications of AI and ML in business.',
+        date: '2024-02-28',
+        location: 'Tech Hub Downtown',
+        status: 'active' as const,
+        attendees: 150
+      },
+      {
+        id: '3',
+        title: 'Startup Pitch Competition',
+        description: 'Local entrepreneurs present their innovative ideas to potential investors.',
+        date: '2024-01-20',
+        location: 'Innovation Center',
+        status: 'completed' as const,
+        attendees: 200
+      }
+    ];
+
+    // Event managers see all events, volunteers and speakers see only one
+    if (state.user?.role === 'event_manager') {
+      return allEvents;
+    } else {
+      return allEvents.slice(0, 1); // Show only first event for volunteers and speakers
     }
-  ]);
+  };
+
+  const [events] = useState<Event[]>(getEventsForRole());
 
   const getStatusColor = (status: Event['status']) => {
     switch (status) {
@@ -67,10 +78,14 @@ export default function Events() {
     }
   };
 
-  const handleManageEvent = (eventId: string) => {
-    // Start managing the event and navigate to dashboard
+  const handleEventAction = (eventId: string) => {
+    // Start managing/viewing the event and navigate to dashboard
     dispatch({ type: 'START_MANAGING_EVENT', payload: eventId });
     navigate('/dashboard');
+  };
+
+  const getButtonText = () => {
+    return state.user?.role === 'event_manager' ? 'Manage Event' : 'View Event';
   };
 
   return (
@@ -85,10 +100,12 @@ export default function Events() {
             Manage your organized events and create new ones
           </p>
         </div>
-        <Button variant="default" onClick={() => setIsAddModalOpen(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Create Event
-        </Button>
+        {state.user?.role === 'event_manager' && (
+          <Button variant="default" onClick={() => setIsAddModalOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Create Event
+          </Button>
+        )}
       </div>
 
       {/* Events Grid */}
@@ -103,23 +120,25 @@ export default function Events() {
                     {event.description}
                   </CardDescription>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <MoreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Edit className="w-4 h-4 mr-2" />
-                      Edit Event
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-destructive">
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete Event
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {state.user?.role === 'event_manager' && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit Event
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete Event
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
               </div>
               <Badge className={getStatusColor(event.status)}>
                 {event.status}
@@ -145,9 +164,9 @@ export default function Events() {
               <Button 
                 variant="outline" 
                 className="w-full mt-4"
-                onClick={() => handleManageEvent(event.id)}
+                onClick={() => handleEventAction(event.id)}
               >
-                Manage Event
+                {getButtonText()}
               </Button>
             </CardContent>
           </Card>

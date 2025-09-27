@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
 import { useApp } from '@/contexts/AppContext';
 
 const sidebarItems = [
-  { id: 'events', label: 'My Events', icon: CalendarDays, path: '/events', roles: ['event_manager'] },
+  { id: 'events', label: 'My Events', icon: CalendarDays, path: '/events', roles: ['event_manager', 'volunteer', 'speaker'] },
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', roles: ['event_manager'] },
   { id: 'tasks', label: 'Task Manager', icon: CheckSquare, path: '/tasks', roles: ['event_manager', 'volunteer', 'speaker'] },
   { id: 'people', label: 'People', icon: Users, path: '/people', roles: ['event_manager', 'volunteer', 'speaker'] },
@@ -45,10 +45,10 @@ export function Sidebar() {
   const visibleItems = sidebarItems.filter(item => {
     if (!state.user) return false;
     
-    // Always show My Events
+    // Always show My Events for all roles
     if (item.id === 'events') return item.roles.includes(state.user.role);
     
-    // Only show other items when managing an event
+    // Show other items when managing/viewing an event
     if (!state.isManagingEvent) return false;
     
     return item.roles.includes(state.user.role);
